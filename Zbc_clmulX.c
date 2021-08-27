@@ -1,0 +1,25 @@
+long __attribute__ ((noinline)) clmul(long rs1, long rs2) {
+    long rd;
+    __asm__ ("clmul    %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2));
+    return rd;
+}
+
+long __attribute__ ((noinline)) clmulh(long rs1, long rs2) {
+    long rd;
+    __asm__ ("clmulh    %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2));
+    return rd;
+}
+
+long __attribute__ ((noinline)) clmulr(long rs1, long rs2) {
+    long rd;
+    __asm__ ("clmulr    %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2));
+    return rd;
+}
+
+int main() {
+    volatile long a = 0xffffccccffffcccc, b = 0xdeadbeef12345678;
+    if (clmul(a, b) != 0xb330e223312d6820) return 1;
+    if (clmulh(a, b) != 0x4a6482eec87908ed) return 2;
+    if (clmulr(a, b) != 0x94c905dd90f211db) return 3;
+    return 0;
+}

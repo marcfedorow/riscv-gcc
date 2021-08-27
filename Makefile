@@ -1,7 +1,8 @@
 ## Simple Makefile for riscv toolchain+qemu tests
 
 ## Change follow vars to your real path
-CC = ../bin/bin/riscv64-unknown-linux-gnu-gcc
+CC_NEWLIB_ELF = ../bin/bin/riscv64-unknown-elf-gcc
+CC_LINUX_ELF = ../bin/bin/riscv64-unknown-linux-gnu-gcc
 QEMU = ../qemu/build/qemu-riscv64
 
 ## Machine config
@@ -20,34 +21,49 @@ MABI = lp64d
 
 SRCS = $(wildcard *.c)
 ASMS = $(SRCS:.c=.s)
-ELFS = $(SRCS:.c=.elf)
+LINUX_ELFS = $(SRCS:.c=.out)
+NEWLIB_ELFS = $(SRCS:.c=.elf)
+
 
 .PHONY : all 
-all: elf asm
+all: linux_elf newlib_elf asm
 
 
-.PHONY : elf
-elf: $(ELFS)
+# Compile linux elfs
+.PHONY : linux_elf
+linux_elf: $(LINUX_ELFS)
 
-$(ELFS): %.elf: %.c
-	$(CC) -march="$(MARCH)" -mabi=$(MABI) -O3 -static $< -o $@
+$(LINUX_ELFS): %.out: %.c
+	$(CC_LINUX_ELF) -march="$(MARCH)" -mabi=$(MABI) -O3 -static $< -o $@
 
 
+# Compile newlib elfs
+.PHONY : newlib_elf
+newlib_elf: $(NEWLIB_ELFS)
+
+$(NEWLIB_ELFS): %.elf: %.c
+	$(CC_NEWLIB_ELF) -march="$(MARCH)" -mabi=$(MABI) -O3 $< -o $@
+
+
+# Gen assembles
 .PHONY : asm
 asm: $(ASMS)
 
 $(ASMS): %.s: %.c
-	$(CC) -march="$(MARCH)" -mabi=$(MABI) -O3 $< -S
+	$(CC_LINUX_ELF) -march="$(MARCH)" -mabi=$(MABI) -O3 $< -S
 
 
-TESTS = $(ELFS:=.t)
-.PHONY : test
-test: $(TESTS)
+# Use qemu to run all linux elf
+TESTS = $(LINUX_ELFS:=.t)
+.PHONY : test_linux_elf
+test_linux_elf: $(TESTS)
 
 .PHONY : $(TESTS)
 $(TESTS): %.t: %
-	$(QEMU) -cpu rv64,x-b=true $<
+	$(QEMU) -cpu rv64,x-b=true,x-k=true $<
 
+
+# Clean
 .PHONY : clean
 clean:
-	rm $(ASMS) $(ELFS)
+	rm -f $(ASMS) $(LINUX_ELFS) $(NEWLIB_ELFS)

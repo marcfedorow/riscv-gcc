@@ -15,33 +15,60 @@ min:
 	min	a0,a1,a0
 	ret
 	.size	min, .-min
+	.align	1
+	.globl	maxu
+	.type	maxu, @function
+maxu:
+	maxu	a0,a1,a0
+	ret
+	.size	maxu, .-maxu
+	.align	1
+	.globl	minu
+	.type	minu, @function
+minu:
+	minu	a0,a1,a0
+	ret
+	.size	minu, .-minu
 	.section	.text.startup,"ax",@progbits
 	.align	1
 	.globl	main
 	.type	main, @function
 main:
 	addi	sp,sp,-16
-	li	a5,34
-	sw	a5,8(sp)
-	li	a3,56
-	sw	a3,12(sp)
-	lw	a5,8(sp)
-	lw	a4,12(sp)
+	li	a4,34
+	sd	a4,0(sp)
+	li	a3,-56
+	sd	a3,8(sp)
+	ld	a5,0(sp)
+	ld	a2,8(sp)
 	li	a0,1
-	sext.w	a5,a5
-	sext.w	a4,a4
-	max	a5,a5,a4
-	bne	a5,a3,.L5
-	lw	a0,8(sp)
-	lw	a5,12(sp)
-	sext.w	a0,a0
-	sext.w	a5,a5
-	min	a0,a0,a5
-	addi	a0,a0,-34
-	snez	a0,a0
-.L5:
+	max	a5,a5,a2
+	bne	a5,a4,.L7
+	ld	a4,0(sp)
+	ld	a2,8(sp)
+	min	a4,a4,a2
+	bne	a4,a3,.L9
+	ld	a3,0(sp)
+	ld	a2,8(sp)
+	maxu	a3,a3,a2
+	bne	a3,a4,.L10
+	ld	a4,0(sp)
+	ld	a3,8(sp)
+	li	a0,0
+	minu	a4,a4,a3
+	bne	a4,a5,.L13
+.L7:
 	addi	sp,sp,16
 	jr	ra
+.L9:
+	li	a0,2
+	j	.L7
+.L13:
+	li	a0,4
+	j	.L7
+.L10:
+	li	a0,3
+	j	.L7
 	.size	main, .-main
 	.ident	"GCC: (GNU) 10.2.0"
 	.section	.note.GNU-stack,"",@progbits

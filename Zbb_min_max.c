@@ -1,15 +1,25 @@
-int max(int a, int b) {
+long max(long a, long b) {
     return a > b ? a : b;
 }
 
-int min(int a, int b) {
+long min(long a, long b) {
     return a < b ? a : b;
 }
 
+unsigned long maxu(unsigned long a, unsigned long b) {
+    return a > b ? a : b;
+}
+
+unsigned long minu(unsigned long a, unsigned long b) {
+    return a < b ? a : b;
+}
+
+
 int main() {
-    volatile int a = 34, b = 56;
-    if (max(a, b) != 56 || min(a, b) != 34) {
-        return 1;
-    }
+    volatile long a = 34, b = -56;
+    if (max(a, b) != 34) return 1;
+    if (min(a, b) != -56) return 2;
+    if (maxu(a, b) != -56) return 3;
+    if (minu(a, b) != 34) return 4;
     return 0;
 }
