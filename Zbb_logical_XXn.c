@@ -13,10 +13,12 @@ long __attribute__ ((noinline)) xorn(long a, long b) {
     return ~i;
 }
 
-int main() {
+int _main() {
     volatile long a = 12, b = 34;
     if (andn(a, b) != (12 & ~34)) return 1;
     if (orn(a, b) != (12 | ~34)) return 2;
     if (xorn(a, b) != (~(12 ^ 34))) return 3;
     return 0;
 }
+
+char *_file = __FILE__;

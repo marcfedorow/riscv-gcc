@@ -46,7 +46,7 @@ long __attribute__ ((noinline)) bseti61(long rs1) {
     return rd;
 }
 
-int main() {
+int _main() {
     volatile long a = 0xdeadbeef12345678;
     if (bclr(a, 4) != 0xdeadbeef12345668) return 1;
     if (bclr(a, 7) != 0xdeadbeef12345678) return 1;
@@ -62,3 +62,5 @@ int main() {
     if (bseti61(a) != 0xfeadbeef12345678) return 8;
     return 0;
 }
+
+char *_file = __FILE__;

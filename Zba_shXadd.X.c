@@ -26,7 +26,7 @@ long sh3add_uw(long a, long b) {
 }
 
 
-int main() {
+int _main() {
     volatile long a = 512, b = 10;
     if (sh1add(a, b) != 512*2 + 10) return 1;
     if (sh1add_uw(a, b) != 512*2 + 10) return 2;
@@ -36,3 +36,5 @@ int main() {
     if (sh3add_uw(a, b) != 512*8 + 10) return 6;
     return 0;
 }
+
+char *_file = __FILE__;

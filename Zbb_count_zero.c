@@ -29,7 +29,7 @@ long __attribute__ ((noinline)) ctzw(long a) {
     return d;
 }
 
-int main() {
+int _main() {
     volatile long a = 0x8000, b = 0x1000000000;
     if (clz(a) != 48) return 1;
     if (clzw(a) != 16) return 2;
@@ -37,3 +37,5 @@ int main() {
     if (ctzw(b) != 32) return 4;
     return 0;
 }
+
+char *_file = __FILE__;

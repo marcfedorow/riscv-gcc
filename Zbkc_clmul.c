@@ -10,9 +10,11 @@ long __attribute__ ((noinline)) clmulh(long rs1, long rs2) {
     return rd;
 }
 
-int main() {
+int _main() {
     volatile long a = 0xffffccccffffcccc, b = 0xdeadbeef12345678;
     if (clmul(a, b) != 0xb330e223312d6820) return 1;
     if (clmulh(a, b) != 0x4a6482eec87908ed) return 2;
     return 0;
 }
+
+char *_file = __FILE__;

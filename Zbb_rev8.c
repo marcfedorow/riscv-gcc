@@ -4,8 +4,10 @@ long __attribute__ ((noinline)) rev8(long rs1) {
     return rd;
 }
 
-int main() {
+int _main() {
     volatile long a = 0x1100023300004455;
     if (rev8(a) != 0x5544000033020011) return 1;
     return 0;
 }
+
+char *_file = __FILE__;

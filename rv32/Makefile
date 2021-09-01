@@ -1,13 +1,13 @@
 ## Simple Makefile for riscv toolchain+qemu tests
 
 ## Change follow vars to your real path
-CC_NEWLIB_ELF = ../bin/bin/riscv64-unknown-elf-gcc
-CC_LINUX_ELF = ../bin/bin/riscv64-unknown-linux-gnu-gcc
-QEMU = ../qemu/build/qemu-riscv64
+CC_NEWLIB_ELF = ../../bin32/bin/riscv32-unknown-elf-gcc
+CC_LINUX_ELF = ../../bin32/bin/riscv32-unknown-linux-gnu-gcc
+QEMU = ../../qemu/build/qemu-riscv32
 
 ## Machine config
-MARCH = rv64gc_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh_zkr_zkt
-MABI = lp64d
+MARCH = rv32gc_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh_zkr_zkt
+MABI = ilp32d
 
 ## Usage:
 ##
@@ -60,7 +60,7 @@ test_linux_elf: $(TESTS)
 
 .PHONY : $(TESTS)
 $(TESTS): %.t: %
-	$(QEMU) -cpu rv64,x-b=true,x-k=true $<
+	$(QEMU) -cpu rv32,x-b=true,x-k=true $<
 
 
 # Clean

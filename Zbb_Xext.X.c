@@ -13,10 +13,12 @@ long __attribute__ ((noinline)) zext_h(long a) {
     return b;
 }
 
-int main() {
+int _main() {
     volatile long a = 0x8080;
     if (sext_b(a) != -128) return 1;
     if (sext_h(a) != -32640) return 2;
     if (zext_h(a) != 32896) return 3;
     return 0;
 }
+
+char *_file = __FILE__;

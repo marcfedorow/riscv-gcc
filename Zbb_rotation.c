@@ -36,7 +36,7 @@ long __attribute__ ((noinline)) rorw(long rs1, long rs2) {
     return rd;
 }
 
-int main() {
+int _main() {
     volatile long a = 0x8080808080808080;
     if (rol(a, 1) != 0x0101010101010101) return 1;
     if (rolw(a, 1) != 0x01010101) return 2;
@@ -46,3 +46,5 @@ int main() {
     if (rorw(a, 1) != 0x40404040) return 6;
     return 0;
 }
+
+char *_file = __FILE__;

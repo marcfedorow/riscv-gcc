@@ -22,7 +22,7 @@ long __attribute__ ((noinline)) rev_b(long rs1) {
     return rd;
 }
 
-int main() {
+int _main() {
     volatile long a = 0xdeadbeef12345678, b = 0xffff1234ffff4321;
     if (pack(a, b) != 0xffff432112345678) return 1;
     if (packh(a, b) != 0x2178) return 2;
@@ -31,3 +31,5 @@ int main() {
     // zip, unzip not included since this testcase is for rv64
     return 0;
 }
+
+char *_file = __FILE__;
